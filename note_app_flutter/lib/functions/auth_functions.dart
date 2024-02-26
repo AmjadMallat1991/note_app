@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/auth/success_screen.dart';
 import 'package:note_app/constant/link_api.dart';
+import 'package:note_app/main.dart';
 import 'package:note_app/services/resquests_services.dart';
 
 import '../home_screen.dart';
@@ -86,6 +87,10 @@ class AuthFunctions {
 
     if (response != null && response.containsKey('status')) {
       if (response['status'] == "success") {
+        sharedPrefenrece.setString('id', response['data']['id'].toString());
+        sharedPrefenrece.setString('username', response['data']['username']);
+        sharedPrefenrece.setString('email', response['data']['email']);
+
         // ignore: use_build_context_synchronously
         Navigator.pushAndRemoveUntil(
           context,

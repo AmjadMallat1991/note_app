@@ -3,9 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:note_app/auth/signup_screen.dart';
 import 'package:note_app/components/text_field_component.dart';
 import 'package:note_app/functions/auth_functions.dart';
-import 'package:note_app/home_screen.dart';
-
-import '../functions/valid.dart';
+import 'package:note_app/functions/valid.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

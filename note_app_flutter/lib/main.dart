@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:note_app/auth/login_Screen.dart';
 import 'package:note_app/auth/signup_screen.dart';
 import 'package:note_app/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+late SharedPreferences sharedPrefenrece;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  sharedPrefenrece = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      initialRoute: 'login',
+      initialRoute: sharedPrefenrece.getString('id') == null ? 'login' : 'home',
       routes: {
         'login': (context) => const LoginScreen(),
         'signup': (context) => const SignUpScreen(),

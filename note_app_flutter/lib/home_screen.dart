@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/auth/login_screen.dart';
+import 'package:note_app/main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
             fontSize: 22,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              sharedPrefenrece.clear();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.exit_to_app,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
