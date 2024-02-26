@@ -4,6 +4,7 @@ import 'package:note_app/auth/login_screen.dart';
 import 'package:note_app/components/card_notes_components.dart';
 import 'package:note_app/functions/notes_functions.dart';
 import 'package:note_app/main.dart';
+import 'package:note_app/notes/add_notes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -56,7 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddNotesScreen(),
+            ),
+          );
+        },
         child: const Icon(
           Icons.add,
           size: 30,
