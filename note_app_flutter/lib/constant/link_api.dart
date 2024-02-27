@@ -5,4 +5,3 @@ const String linkViewNotes = "$linkServerName/notes/view_notes.php";
 const String linkAddNotes = "$linkServerName/notes/add_notes.php";
 const String linkEditNotes = "$linkServerName/notes/edit_notes.php";
 const String linkDeleteNotes = "$linkServerName/notes/delete_notes.php";
-

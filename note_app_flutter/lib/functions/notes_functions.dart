@@ -19,7 +19,7 @@ class NotesFunctions {
     return response;
   }
 
-  AddNotes({
+  addNotes({
     required BuildContext context,
     required String title,
     required String content,
@@ -30,6 +30,70 @@ class NotesFunctions {
         "notes_title": title,
         "notes_content": content,
         "notes_users": sharedPrefenrece.getString('id'),
+      },
+    );
+
+    if (response != null && response.containsKey('status')) {
+      if (response['status'] == "success") {
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+          (route) => false,
+        );
+      } else {
+        // Failed signup
+        final snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          content: const Row(
+            children: [
+              Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Add Notes failed',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          action: SnackBarAction(
+            label: '',
+            onPressed: () {},
+          ),
+        );
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } else {
+      // Handle case where response is null or does not contain 'status' key
+      print('Invalid response format');
+      if (response != null) {
+        print('Response Body: $response');
+      }
+    }
+  }
+
+  editNotes({
+    required BuildContext context,
+    required String title,
+    required String content,
+    required String notesId,
+  }) async {
+    var response = await services.postRequest(
+      linkEditNotes,
+      {
+        "notes_title": title,
+        "notes_content": content,
+        "notes_id": notesId,
       },
     );
 

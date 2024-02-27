@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
         'home': (context) => const HomeScreen(),
         'success': (context) => const SuccessScreen(),
         'addnotes': (context) => const AddNotesScreen(),
-        'editnotes': (context) => const EditNotesScreen(),
+        'editnotes': (context) => const EditNotesScreen(
+              notes: null,
+            ),
       },
     );
   }

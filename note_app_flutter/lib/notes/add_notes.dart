@@ -76,7 +76,7 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
                         loading = true;
                       });
                       if (formState.currentState!.validate()) {
-                        await notesFunctions.AddNotes(
+                        await notesFunctions.addNotes(
                           context: context,
                           title: titleController.text,
                           content: contentController.text,

@@ -5,6 +5,7 @@ import 'package:note_app/components/card_notes_components.dart';
 import 'package:note_app/functions/notes_functions.dart';
 import 'package:note_app/main.dart';
 import 'package:note_app/notes/add_notes.dart';
+import 'package:note_app/notes/edit_notes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     NotesFunctions().viewNotes();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   return CardNote(
                     title: snapshot.data['notes'][index]['notes_title'],
                     content: snapshot.data['notes'][index]['notes_content'],
-                    ontap: () {},
+                    ontap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditNotesScreen(
+                            notes: snapshot.data['notes'][index],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               );
