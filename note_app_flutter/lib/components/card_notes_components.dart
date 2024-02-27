@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/model/ntes_model.dart';
 
 class CardNote extends StatelessWidget {
   const CardNote({
     super.key,
     this.ontap,
-    required this.title,
-    required this.content,
     required this.onDelete,
+    required this.noteModel,
   });
-  final String title;
-  final String content;
+  final NotesModel noteModel;
   final void Function() onDelete;
 
   final void Function()? ontap;
@@ -29,8 +28,8 @@ class CardNote extends StatelessWidget {
           Expanded(
             flex: 2,
             child: ListTile(
-              title: Text(title),
-              subtitle: Text(content),
+              title: Text(noteModel.notesTitle.toString()),
+              subtitle: Text(noteModel.notesContent.toString()),
               trailing: IconButton(
                 onPressed: onDelete,
                 icon: Icon(

@@ -4,6 +4,7 @@ import 'package:note_app/auth/login_screen.dart';
 import 'package:note_app/components/card_notes_components.dart';
 import 'package:note_app/functions/notes_functions.dart';
 import 'package:note_app/main.dart';
+import 'package:note_app/model/ntes_model.dart';
 import 'package:note_app/notes/add_notes.dart';
 import 'package:note_app/notes/edit_notes.dart';
 
@@ -117,8 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                       setState(() {});
                     },
-                    title: snapshot.data['notes'][index]['notes_title'],
-                    content: snapshot.data['notes'][index]['notes_content'],
+                    noteModel:NotesModel.fromJson(snapshot.data['notes'][index]) ,
                     ontap: () {
                       Navigator.push(
                         context,
