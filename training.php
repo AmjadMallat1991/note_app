@@ -40,17 +40,17 @@
 
 // this is associative array same MAP in dart
 
-$listAssoc=array(
-'name'=>'salim',
-'age'=>18,
+// $listAssoc=array(
+// 'name'=>'salim',
+// 'age'=>18,
 
-);
+// );
 
-echo  $listAssoc['name'] .'<br/>';
+// echo  $listAssoc['name'] .'<br/>';
 
-foreach ($listAssoc as $key => $value) {
-    echo ' '. $key .' '. $value .' ';
-}
+// foreach ($listAssoc as $key => $value) {
+//     echo ' '. $key .' '. $value .' ';
+// }
 
 
 
@@ -68,3 +68,22 @@ foreach ($listAssoc as $key => $value) {
 // echo $postName;
 // print_r($_POST);
 
+
+
+// $filename="photo_image.png";
+
+// $strtoarray=explode(".",$filename);
+
+// $ext=end($strtoarray);
+// $allowExt=array("png","jpg","jpeg","gif",);
+// if(in_array($ext,$allowExt)) { 
+//     echo "yes";
+//  }
+//  else{
+//     echo"no";
+//  }
+
+$file=$_FILES['file'];
+echo "<pre>";
+print_r($file);
+echo"</pre>";
