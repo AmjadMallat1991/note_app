@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
     NotesFunctions().viewNotes();
   }
 
-
   @override
   Widget build(BuildContext context) {
     NotesFunctions notesFunctions = NotesFunctions();
@@ -111,6 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: snapshot.data['notes'].length,
                 itemBuilder: (context, index) {
                   return CardNote(
+                    onDelete: () {
+                      notesFunctions.deleteNotes(
+                        context: context,
+                        notesId: snapshot.data['notes'][index]['notes_id'].toString(),
+                      );
+                      setState(() {});
+                    },
                     title: snapshot.data['notes'][index]['notes_title'],
                     content: snapshot.data['notes'][index]['notes_content'],
                     ontap: () {

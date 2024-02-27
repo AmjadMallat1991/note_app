@@ -6,9 +6,11 @@ class CardNote extends StatelessWidget {
     this.ontap,
     required this.title,
     required this.content,
+    required this.onDelete,
   });
   final String title;
   final String content;
+  final void Function() onDelete;
 
   final void Function()? ontap;
 
@@ -29,6 +31,14 @@ class CardNote extends StatelessWidget {
             child: ListTile(
               title: Text(title),
               subtitle: Text(content),
+              trailing: IconButton(
+                onPressed: onDelete,
+                icon: Icon(
+                  Icons.delete,
+                  size: 25,
+                  color: Colors.blue[800],
+                ),
+              ),
             ),
           ),
         ],
