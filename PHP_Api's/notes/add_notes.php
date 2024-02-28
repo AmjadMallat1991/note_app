@@ -5,21 +5,23 @@ include "../connect.php";
 $title = filterRequest("notes_title");
 $content = filterRequest("notes_content");
 $userId = filterRequest("notes_users");
+$imagename = imageUpload("file");
 
-$stmt = $con->prepare("INSERT INTO `notes` (`notes_title`, `notes_content`, `notes_users`) VALUES (:title, :content, :userId)");
-try{
-$stmt->execute(array(":title" => $title, ":content" => $content, ":userId" => $userId));
-}
-catch (PDOException $e) {
-    // Handle the exception (e.g., log the error, return a specific error response)
-    echo json_encode(array("status" => "error", "message" => $e->getMessage()));
-}
+if ($imagename != 'fail') {
+    $stmt = $con->prepare("INSERT INTO `notes` (`notes_title`, `notes_content`, `notes_users`,`notes_image`) VALUES (:title, :content, :userId, :images)");
 
-$count = $stmt->rowCount();
-if ($count > 0) {
-    echo json_encode(array("status" => "success"));
+    try {
+        $stmt->execute(array(":title" => $title, ":content" => $content, ":userId" => $userId, ":images" => $imagename));
+    } catch (PDOException $e) {
+        echo json_encode(array("status" => "error", "message" => $e->getMessage()));
+    }
+
+    $count = $stmt->rowCount();
+    if ($count > 0) {
+        echo json_encode(array("status" => "success"));
+    } else {
+        echo json_encode(array("status" => "error"));
+    }
 } else {
-    echo json_encode(array("status" => "error"));
+    echo json_encode(array("status" => "fail"));
 }
-
-
