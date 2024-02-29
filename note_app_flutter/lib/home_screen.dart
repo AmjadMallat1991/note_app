@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:note_app/auth/login_screen.dart';
 import 'package:note_app/components/card_notes_components.dart';
 import 'package:note_app/functions/notes_functions.dart';
@@ -17,11 +18,34 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool loading = true;
+  final PagingController<int, NotesModel> _pagingController = PagingController(
+    firstPageKey: 1,
+  );
+
+  Future<void> _fetchPage(int pageKey) async {
+    NotesFunctions notesFunctions = NotesFunctions();
+    try {
+      await notesFunctions.viewNotes(page: pageKey);
+
+      final isLastPage = pageKey >= notesFunctions.totalPages;
+
+      if (isLastPage) {
+        _pagingController.appendLastPage(notesFunctions.notes);
+      } else {
+        pageKey += 1;
+        _pagingController.appendPage(notesFunctions.notes, pageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    NotesFunctions().viewNotes();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
   }
 
   @override
@@ -72,81 +96,122 @@ class _HomeScreenState extends State<HomeScreen> {
           size: 30,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: FutureBuilder(
-          future: notesFunctions.viewNotes(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data['status'] == 'error') {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 40.0),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/empty_notes.png',
-                          width: 250,
-                          height: 250,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Empty Notes...",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.6,
-                          ),
-                        )
-                      ],
+      body: PagedListView<int, NotesModel>(
+        shrinkWrap: false,
+        pagingController: _pagingController,
+        physics: const ClampingScrollPhysics(),
+        builderDelegate: PagedChildBuilderDelegate<NotesModel>(
+          newPageProgressIndicatorBuilder: (context) =>
+              const SpinKitThreeBounce(
+            color: Colors.red,
+            size: 25.0,
+          ),
+          firstPageProgressIndicatorBuilder: (context) => const SpinKitPulse(
+            color: Colors.red,
+          ),
+          itemBuilder: (context, item, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CardNote(
+                onDelete: () {
+                  notesFunctions.deleteNotes(
+                    context: context,
+                    notesId: item.notesId.toString(),
+                    imageName: item.notesImage.toString(),
+                  );
+                  setState(() {});
+                },
+                noteModel: item,
+                ontap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditNotesScreen(
+                        notes: item,
+                      ),
                     ),
-                  ),
-                );
-              }
-              return ListView.builder(
-                itemCount: snapshot.data['notes'].length,
-                itemBuilder: (context, index) {
-                  return CardNote(
-                    onDelete: () {
-                      notesFunctions.deleteNotes(
-                        context: context,
-                        notesId: snapshot.data['notes'][index]['notes_id']
-                            .toString(),
-                        imageName: snapshot.data['notes'][index]['notes_image'],
-                      );
-                      setState(() {});
-                    },
-                    noteModel:
-                        NotesModel.fromJson(snapshot.data['notes'][index]),
-                    ontap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditNotesScreen(
-                            notes: snapshot.data['notes'][index],
-                          ),
-                        ),
-                      );
-                    },
                   );
                 },
-              );
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: SpinKitPulse(color: Colors.blue[800]),
-              );
-            }
-            return Center(
-              child: SpinKitPulse(color: Colors.blue[800]),
+              ),
             );
           },
         ),
       ),
+      // body: Padding(
+      //   padding: const EdgeInsets.all(10.0),
+      //   child: FutureBuilder(
+      //     future: notesFunctions.viewNotes(),
+      //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+      //       if (snapshot.hasData) {
+      //         if (snapshot.data['status'] == 'error') {
+      //           return Padding(
+      //             padding: const EdgeInsets.only(bottom: 40.0),
+      //             child: Center(
+      //               child: Column(
+      //                 mainAxisAlignment: MainAxisAlignment.center,
+      //                 crossAxisAlignment: CrossAxisAlignment.center,
+      //                 children: [
+      //                   Image.asset(
+      //                     'assets/images/empty_notes.png',
+      //                     width: 250,
+      //                     height: 250,
+      //                   ),
+      //                   const SizedBox(
+      //                     height: 10,
+      //                   ),
+      //                   const Text(
+      //                     "Empty Notes...",
+      //                     style: TextStyle(
+      //                       fontSize: 20,
+      //                       fontWeight: FontWeight.w600,
+      //                       letterSpacing: 0.6,
+      //                     ),
+      //                   )
+      //                 ],
+      //               ),
+      //             ),
+      //           );
+      //         }
+      //         return ListView.builder(
+      //           itemCount: snapshot.data['notes'].length,
+      //           itemBuilder: (context, index) {
+      //             return CardNote(
+      //               onDelete: () {
+      //                 notesFunctions.deleteNotes(
+      //                   context: context,
+      //                   notesId: snapshot.data['notes'][index]['notes_id']
+      //                       .toString(),
+      //                   imageName: snapshot.data['notes'][index]['notes_image'],
+      //                 );
+      //                 setState(() {});
+      //               },
+      //               noteModel:
+      //                   NotesModel.fromJson(snapshot.data['notes'][index]),
+      //               ontap: () {
+      //                 Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(
+      //                     builder: (context) => EditNotesScreen(
+      //                       notes: snapshot.data['notes'][index],
+      //                     ),
+      //                   ),
+      //                 );
+      //               },
+      //             );
+      //           },
+      //         );
+      //       }
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return Center(
+      //           child: SpinKitPulse(color: Colors.blue[800]),
+      //         );
+      //       }
+      //       return Center(
+      //         child: SpinKitPulse(color: Colors.blue[800]),
+      //       );
+      //     },
+      //   ),
+      // ),
     );
   }
 }

@@ -4,20 +4,47 @@ import 'package:flutter/material.dart';
 import 'package:note_app/constant/link_api.dart';
 import 'package:note_app/home_screen.dart';
 import 'package:note_app/main.dart';
+import 'package:note_app/model/notes_model.dart';
 import 'package:note_app/services/resquests_services.dart';
 
 class NotesFunctions {
   requestServices services = requestServices();
-  viewNotes() async {
-    var response = await services.postRequest(
-      linkViewNotes,
-      {
-        "notes_users": sharedPrefenrece.getString('id'),
-      },
-    );
+  int totalPages = 0;
+  List<NotesModel> notes = [];
+  // viewNotes() async {
+  //   var response = await services.postRequest(
+  //     linkViewNotes,
+  //     {
+  //       "notes_users": sharedPrefenrece.getString('id'),
+  //     },
+  //   );
 
-    inspect(response['notes']);
-    return response;
+  //   inspect(response['notes']);
+  //   return response;
+  // }
+
+  Future<Map<String, dynamic>> viewNotes({required int page}) async {
+    try {
+      var response = await services.postRequest(
+        '$linkViewNotes?page=$page&limit=1',
+        {
+          "notes_users": sharedPrefenrece.getString('id'),
+        },
+      );
+
+      notes = [];
+      response['notes'].forEach((noteData) {
+        notes.add(NotesModel.fromJson(noteData));
+      });
+      totalPages = response["total_pages"];
+      print(totalPages);
+      inspect(notes);
+      return response;
+    } catch (error) {
+      // Handle error
+      print('Error fetching notes: $error');
+      return {'error': 'Failed to fetch notes'};
+    }
   }
 
   addNotes({
@@ -91,7 +118,6 @@ class NotesFunctions {
     required String content,
     required String notesId,
     required String notesImage,
-
     required File? myfile,
   }) async {
     var response;
@@ -102,17 +128,16 @@ class NotesFunctions {
           "notes_title": title,
           "notes_content": content,
           "notes_id": notesId,
-          "notes_image":notesImage,
+          "notes_image": notesImage,
         },
       );
-    }
-    else{
-response = await services.postRequestFile(
+    } else {
+      response = await services.postRequestFile(
         linkEditNotes,
         {
           "notes_title": title,
           "notes_content": content,
-          "notes_image":notesImage,
+          "notes_image": notesImage,
           "notes_id": notesId,
         },
         myfile,
