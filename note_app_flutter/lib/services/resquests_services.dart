@@ -3,6 +3,10 @@ import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+String _basicAuth = 'Basic ${base64Encode(utf8.encode('amjad:amjad88'))}';
+
+Map<String, String> myheaders = {'authorization': _basicAuth};
+
 class requestServices {
   getRequest(String url) async {
     try {
@@ -25,6 +29,7 @@ class requestServices {
       var response = await http.post(
         Uri.parse(url),
         body: data,
+        headers: myheaders,
       );
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
@@ -50,9 +55,10 @@ class requestServices {
       length,
       filename: basename(file.path),
     );
+    request.headers.addAll(myheaders);
     request.files.add(multiPartFile);
     data.forEach((key, value) {
-      request.fields[key] =value;
+      request.fields[key] = value;
     });
     var myRequest = await request.send();
     var response = await http.Response.fromStream(myRequest);
