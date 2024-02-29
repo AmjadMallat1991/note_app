@@ -121,7 +121,10 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
                                           await ImagePicker().pickImage(
                                         source: ImageSource.camera,
                                       );
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.of(context).pop();
                                       myfile = File(file!.path);
+                                      setState(() {});
                                     },
                                     child: const Row(
                                       mainAxisAlignment:
@@ -156,7 +159,8 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
                                             await ImagePicker().pickImage(
                                           source: ImageSource.gallery,
                                         );
-
+// ignore: use_build_context_synchronously
+                                        Navigator.of(context).pop();
                                         if (file != null) {
                                           myfile = File(file.path);
                                           // Do something with myfile
@@ -167,6 +171,7 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
                                         // Handle any errors that occur during image picking
                                         print('Error picking image: $e');
                                       }
+                                      setState(() {});
                                     },
                                     child: const Row(
                                       mainAxisAlignment:

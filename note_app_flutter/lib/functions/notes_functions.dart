@@ -90,15 +90,34 @@ class NotesFunctions {
     required String title,
     required String content,
     required String notesId,
+    required String notesImage,
+
+    required File? myfile,
   }) async {
-    var response = await services.postRequest(
-      linkEditNotes,
-      {
-        "notes_title": title,
-        "notes_content": content,
-        "notes_id": notesId,
-      },
-    );
+    var response;
+    if (myfile == null) {
+      response = await services.postRequest(
+        linkEditNotes,
+        {
+          "notes_title": title,
+          "notes_content": content,
+          "notes_id": notesId,
+          "notes_image":notesImage,
+        },
+      );
+    }
+    else{
+response = await services.postRequestFile(
+        linkEditNotes,
+        {
+          "notes_title": title,
+          "notes_content": content,
+          "notes_image":notesImage,
+          "notes_id": notesId,
+        },
+        myfile,
+      );
+    }
 
     if (response != null && response.containsKey('status')) {
       if (response['status'] == "success") {
@@ -152,11 +171,13 @@ class NotesFunctions {
   deleteNotes({
     required BuildContext context,
     required String notesId,
+    required String imageName,
   }) async {
     var response = await services.postRequest(
       linkDeleteNotes,
       {
         "notes_id": notesId,
+        "notes_image": imageName,
       },
     );
 

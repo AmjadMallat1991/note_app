@@ -114,11 +114,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     onDelete: () {
                       notesFunctions.deleteNotes(
                         context: context,
-                        notesId: snapshot.data['notes'][index]['notes_id'].toString(),
+                        notesId: snapshot.data['notes'][index]['notes_id']
+                            .toString(),
+                        imageName: snapshot.data['notes'][index]['notes_image'],
                       );
                       setState(() {});
                     },
-                    noteModel:NotesModel.fromJson(snapshot.data['notes'][index]) ,
+                    noteModel:
+                        NotesModel.fromJson(snapshot.data['notes'][index]),
                     ontap: () {
                       Navigator.push(
                         context,
