@@ -96,44 +96,47 @@ class _HomeScreenState extends State<HomeScreen> {
           size: 30,
         ),
       ),
-      body: PagedListView<int, NotesModel>(
-        shrinkWrap: false,
-        pagingController: _pagingController,
-        physics: const ClampingScrollPhysics(),
-        builderDelegate: PagedChildBuilderDelegate<NotesModel>(
-          newPageProgressIndicatorBuilder: (context) => SpinKitThreeBounce(
-            color: Colors.blue[800],
-            size: 25.0,
-          ),
-          firstPageProgressIndicatorBuilder: (context) => SpinKitPulse(
-            color: Colors.blue[800],
-          ),
-          itemBuilder: (context, item, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CardNote(
-                onDelete: () {
-                  notesFunctions.deleteNotes(
-                    context: context,
-                    notesId: item.notesId.toString(),
-                    imageName: item.notesImage.toString(),
-                  );
-                  setState(() {});
-                },
-                noteModel: item,
-                ontap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditNotesScreen(
-                        notes: item,
+      body: Container(
+        height: double.maxFinite,
+        child: PagedListView<int, NotesModel>(
+          shrinkWrap: true,
+          pagingController: _pagingController,
+          physics: const ClampingScrollPhysics(),
+          builderDelegate: PagedChildBuilderDelegate<NotesModel>(
+            newPageProgressIndicatorBuilder: (context) => SpinKitThreeBounce(
+              color: Colors.blue[800],
+              size: 25.0,
+            ),
+            firstPageProgressIndicatorBuilder: (context) => SpinKitPulse(
+              color: Colors.blue[800],
+            ),
+            itemBuilder: (context, item, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CardNote(
+                  onDelete: () async {
+                    await notesFunctions.deleteNotes(
+                      context: context,
+                      notesId: item.notesId.toString(),
+                      imageName: item.notesImage.toString(),
+                    );
+                    _pagingController.refresh();
+                  },
+                  noteModel: item,
+                  ontap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditNotesScreen(
+                          notes: item,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
       // body: Padding(

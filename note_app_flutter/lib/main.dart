@@ -3,6 +3,7 @@ import 'package:note_app/auth/login_Screen.dart';
 import 'package:note_app/auth/signup_screen.dart';
 import 'package:note_app/auth/success_screen.dart';
 import 'package:note_app/home_screen.dart';
+import 'package:note_app/model/notes_model.dart';
 import 'package:note_app/notes/add_notes.dart';
 import 'package:note_app/notes/edit_notes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         'success': (context) => const SuccessScreen(),
         'addnotes': (context) => const AddNotesScreen(),
         'editnotes': (context) => const EditNotesScreen(
-              notes: null,
+             
             ),
       },
     );

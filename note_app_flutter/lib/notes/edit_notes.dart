@@ -7,10 +7,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:note_app/components/text_field_component.dart';
 import 'package:note_app/functions/notes_functions.dart';
 import 'package:note_app/functions/valid.dart';
+import 'package:note_app/model/notes_model.dart';
 
 class EditNotesScreen extends StatefulWidget {
-  const EditNotesScreen({super.key, required this.notes});
-  final notes;
+  const EditNotesScreen({super.key,  this.notes});
+  final NotesModel? notes;
 
   @override
   State<EditNotesScreen> createState() => _EditNotesScreenState();
@@ -30,8 +31,8 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
   }
 
   getData() {
-    titleController.text = widget.notes['notes_title'];
-    contentController.text = widget.notes['notes_content'];
+    titleController.text = widget.notes!.notesTitle.toString();
+    contentController.text = widget.notes!.notesContent.toString();
   }
 
   @override
@@ -250,14 +251,13 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
                         loading = true;
                       });
                       if (formState.currentState!.validate()) {
-                        print(widget.notes['notes_image']);
                         await notesFunctions.editNotes(
                           context: context,
                           title: titleController.text,
                           content: contentController.text,
-                          notesId: widget.notes['notes_id'].toString(),
+                          notesId: widget.notes!.notesId.toString(),
                           myfile: myfile,
-                          notesImage: widget.notes['notes_image'],
+                          notesImage: widget.notes!.notesImage.toString(),
                         );
                       }
                       setState(() {

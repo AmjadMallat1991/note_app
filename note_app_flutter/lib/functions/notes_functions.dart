@@ -26,7 +26,7 @@ class NotesFunctions {
   Future<Map<String, dynamic>> viewNotes({required int page}) async {
     try {
       var response = await services.postRequest(
-        '$linkViewNotes?page=$page&limit=1',
+        '$linkViewNotes?page=$page&limit=8',
         {
           "notes_users": sharedPrefenrece.getString('id'),
         },
@@ -37,7 +37,6 @@ class NotesFunctions {
         notes.add(NotesModel.fromJson(noteData));
       });
       totalPages = response["total_pages"];
-      print(totalPages);
       inspect(notes);
       return response;
     } catch (error) {
