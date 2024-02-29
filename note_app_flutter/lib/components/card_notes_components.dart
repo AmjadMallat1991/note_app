@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:note_app/constant/link_api.dart';
 import 'package:note_app/model/notes_model.dart';
 
 class CardNote extends StatelessWidget {
@@ -23,7 +25,27 @@ class CardNote extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: Image.asset('assets/images/logo_app.png'),
+            child: Image.network("$linkImageRoot/${noteModel.notesImage}"),
+            // child: CachedNetworkImage(
+            //   filterQuality: FilterQuality.high,
+            //   fit: BoxFit.cover,
+            //   fadeOutDuration: const Duration(),
+            //   placeholderFadeInDuration: const Duration(),
+            //   height: 110,
+            //   width: 110,
+            //   imageUrl: "$linkImageRoot/${noteModel.notesImage}",
+            //   placeholder: (final context, final url) => Image.asset(
+            //     'assets/images/logo_app.png',
+            //   ),
+            //   errorWidget: (
+            //     final context,
+            //     final url,
+            //     final error,
+            //   ) =>
+            //       Image.asset(
+            //     'assets/images/logo_app.png',
+            //   ),
+            // ),
           ),
           Expanded(
             flex: 2,

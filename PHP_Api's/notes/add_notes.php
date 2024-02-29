@@ -5,7 +5,7 @@ include "../connect.php";
 $title = filterRequest("notes_title");
 $content = filterRequest("notes_content");
 $userId = filterRequest("notes_users");
-$imagename = imageUpload("file");
+$imagename = imageUpload("notes_image");
 
 if ($imagename != 'fail') {
     $stmt = $con->prepare("INSERT INTO `notes` (`notes_title`, `notes_content`, `notes_users`,`notes_image`) VALUES (:title, :content, :userId, :images)");

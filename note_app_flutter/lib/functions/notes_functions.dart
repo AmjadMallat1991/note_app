@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:note_app/constant/link_api.dart';
 import 'package:note_app/home_screen.dart';
@@ -23,14 +24,16 @@ class NotesFunctions {
     required BuildContext context,
     required String title,
     required String content,
+    required File myfile,
   }) async {
-    var response = await services.postRequest(
+    var response = await services.postRequestFile(
       linkAddNotes,
       {
         "notes_title": title,
         "notes_content": content,
         "notes_users": sharedPrefenrece.getString('id'),
       },
+      myfile,
     );
 
     if (response != null && response.containsKey('status')) {
