@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextFeildComponent(
                           valid: (val) {
-                            return validnput(val!, 5, 20);
+                            return validnput(val!, 5, 30);
                           },
                           hint: 'Email',
                           controller: emailController,

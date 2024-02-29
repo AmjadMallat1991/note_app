@@ -51,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   TextFeildComponent(
                     valid: (val) {
-                      return validnput(val!, 5, 20);
+                      return validnput(val!, 5, 30);
                     },
                     hint: 'Email',
                     controller: emailController,

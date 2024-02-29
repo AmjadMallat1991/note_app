@@ -242,7 +242,33 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
                       });
 
                       if (myfile == null) {
-                        print("error");
+                        final snackBar = SnackBar(
+                          backgroundColor: Colors.red,
+                          content: const Row(
+                            children: [
+                              Icon(
+                                Icons.error,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Please add Photo',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          action: SnackBarAction(
+                            label: '',
+                            onPressed: () {},
+                          ),
+                        );
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } else if (formState.currentState!.validate()) {
                         await notesFunctions.addNotes(
                           context: context,
