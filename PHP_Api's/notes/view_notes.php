@@ -22,8 +22,8 @@
 include "../connect.php";
 
 $notesid = filterRequest("notes_users");
-$page = isset($_GET['page']) ? intval($_GET['page']) : 1; // Default page is 1
-$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10; // Default limit is 10
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1; 
+$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10; 
 
 $offset = ($page - 1) * $limit;
 

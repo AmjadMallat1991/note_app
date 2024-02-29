@@ -101,13 +101,12 @@ class _HomeScreenState extends State<HomeScreen> {
         pagingController: _pagingController,
         physics: const ClampingScrollPhysics(),
         builderDelegate: PagedChildBuilderDelegate<NotesModel>(
-          newPageProgressIndicatorBuilder: (context) =>
-              const SpinKitThreeBounce(
-            color: Colors.red,
+          newPageProgressIndicatorBuilder: (context) => SpinKitThreeBounce(
+            color: Colors.blue[800],
             size: 25.0,
           ),
-          firstPageProgressIndicatorBuilder: (context) => const SpinKitPulse(
-            color: Colors.red,
+          firstPageProgressIndicatorBuilder: (context) => SpinKitPulse(
+            color: Colors.blue[800],
           ),
           itemBuilder: (context, item, index) {
             return Padding(
